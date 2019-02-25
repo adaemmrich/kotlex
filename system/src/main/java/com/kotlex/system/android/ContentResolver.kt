@@ -10,7 +10,7 @@ import java.io.FileOutputStream
 import java.io.InputStream
 
 
-fun ContentResolver.tryCopy(source: Uri, target: File): Boolean {
+fun ContentResolver.copy(source: Uri, target: File) {
     var inputStream: InputStream? = null
     var bufferedInputStream: BufferedInputStream? = null
     var fileOutputStream: FileOutputStream? = null
@@ -24,14 +24,10 @@ fun ContentResolver.tryCopy(source: Uri, target: File): Boolean {
         bufferedInputStream = BufferedInputStream(inputStream)
         fileOutputStream = FileOutputStream(target)
         bufferedInputStream.writeTo(fileOutputStream)
-
-        return true
-    } catch (e: Exception) {
     } finally {
         inputStream?.closeCatched()
         bufferedInputStream?.closeCatched()
         fileOutputStream?.closeCatched()
     }
-    return false
 }
 

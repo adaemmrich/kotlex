@@ -21,7 +21,7 @@ fun File.deleteChildren() {
 }
 
 
-fun File.tryCopy(target: File): Boolean {
+fun File.copy(target: File) {
     if (!target.parentFile.exists()) {
         target.parentFile.mkdirs()
     }
@@ -35,15 +35,11 @@ fun File.tryCopy(target: File): Boolean {
         bufferedInputStream = BufferedInputStream(inputStream)
         fileOutputStream = FileOutputStream(target)
         bufferedInputStream.writeTo(fileOutputStream)
-
-        return true
-    } catch (e: Exception) {
     } finally {
         inputStream?.closeCatched()
         bufferedInputStream?.closeCatched()
         fileOutputStream?.closeCatched()
     }
-    return false
 }
 
 

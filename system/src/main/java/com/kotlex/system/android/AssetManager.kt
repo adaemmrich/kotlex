@@ -35,8 +35,7 @@ fun AssetManager.isAssetAvailable(assetPath: String): Boolean {
     return success
 }
 
-fun AssetManager.tryCopy(assetPath: String, target: File): Boolean {
-
+fun AssetManager.copy(assetPath: String, target: File) {
     var inputStream: InputStream? = null
     var bufferedInputStream: BufferedInputStream? = null
     var fileOutputStream: FileOutputStream? = null
@@ -46,14 +45,9 @@ fun AssetManager.tryCopy(assetPath: String, target: File): Boolean {
         bufferedInputStream = BufferedInputStream(open(assetPath))
         fileOutputStream = FileOutputStream(target)
         bufferedInputStream.writeTo(fileOutputStream)
-
-        return true
-    } catch (e: Exception) {
     } finally {
         inputStream?.closeCatched()
         bufferedInputStream?.closeCatched()
         fileOutputStream?.closeCatched()
     }
-
-    return false
 }

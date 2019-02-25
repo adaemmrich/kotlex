@@ -9,6 +9,6 @@ fun BufferedInputStream.writeTo(outputStream: OutputStream, bufferSize: Int = 20
 
     do {
         readSize = this.read(buffer)
-        outputStream.write(buffer, 0, readSize)
+        outputStream.write(buffer)
     } while (readSize > 0)
 }
