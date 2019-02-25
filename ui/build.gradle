@@ -1,18 +1,25 @@
 apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-android'
 apply plugin: 'com.github.dcendents.android-maven'
-group = 'com.github.adaemmrich.kotlex'
+
+
+
+
+
 
 
 android {
     compileSdkVersion 28
-
     defaultConfig {
         minSdkVersion 19
         targetSdkVersion 28
+
         versionCode libCode
         versionName libVersionName
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
     }
 
     buildTypes {
@@ -21,6 +28,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
 }
 
 dependencies {
@@ -30,15 +38,19 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
-    implementation 'io.reactivex.rxjava2:rxkotlin:2.2.0'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
+repositories {
+    mavenCentral()
+}
+
 
 ext {
     bintrayRepo = 'kotlex' // your repo name
-    bintrayName = 'rx' // has to be same as your library module name
+    bintrayName = 'ui' // has to be same as your library module name
     publishedGroupId = 'com.kotlex' // your module package name
-    libraryName = 'rx'
-    artifact = 'rx' // has to be same as your library module name
+    libraryName = 'ui'
+    artifact = 'ui' // has to be same as your library module name
     libraryDescription = ''
     siteUrl = 'https://github.com/adaemmrich/kotlex'
     gitUrl = 'https://github.com/adaemmrich/kotlex.git'
@@ -49,11 +61,14 @@ ext {
     licenseName = 'The Apache Software License, Version 2.0'
     licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
     allLicenses = ["Apache-2.0"]
+
+
 }
 
 tasks.withType(Javadoc).all {
     enabled = false
 }
+
 
 apply from: 'https://raw.githubusercontent.com/numetriclabz/jcenter/master/installv.gradle'
 apply from: 'https://raw.githubusercontent.com/numetriclabz/jcenter/master/bintrayv.gradle'

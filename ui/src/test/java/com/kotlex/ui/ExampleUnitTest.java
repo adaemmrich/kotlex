@@ -1,4 +1,4 @@
-package com.kotlex.view;
+package com.kotlex.ui;
 
 import org.junit.Test;
 

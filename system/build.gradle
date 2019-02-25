@@ -5,16 +5,17 @@ apply plugin: 'com.github.dcendents.android-maven'
 
 group = 'com.github.adaemmrich.kotlex'
 
+
+
+
+
 android {
     compileSdkVersion 28
-
-
-
     defaultConfig {
         minSdkVersion 19
         targetSdkVersion 28
-        versionCode 1
-        versionName "1.0"
+        versionCode libCode
+        versionName libVersionName
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
@@ -41,3 +42,30 @@ dependencies {
 repositories {
     mavenCentral()
 }
+
+
+ext {
+    bintrayRepo = 'kotlex' // your repo name
+    bintrayName = 'system' // has to be same as your library module name
+    publishedGroupId = 'com.kotlex' // your module package name
+    libraryName = 'system'
+    artifact = 'system' // has to be same as your library module name
+    libraryDescription = ''
+    siteUrl = 'https://github.com/adaemmrich/kotlex'
+    gitUrl = 'https://github.com/adaemmrich/kotlex.git'
+    libraryVersion = android.defaultConfig.versionName
+    developerId = 'adaemmrich'
+    developerName = 'adaemmrich'
+    developerEmail = 'flanschifox@gmail.com'
+    licenseName = 'The Apache Software License, Version 2.0'
+    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+    allLicenses = ["Apache-2.0"]
+}
+
+tasks.withType(Javadoc).all {
+    enabled = false
+}
+
+
+apply from: 'https://raw.githubusercontent.com/numetriclabz/jcenter/master/installv.gradle'
+apply from: 'https://raw.githubusercontent.com/numetriclabz/jcenter/master/bintrayv.gradle'
