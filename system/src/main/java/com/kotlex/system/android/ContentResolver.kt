@@ -2,7 +2,6 @@ package com.kotlex.system.android
 
 import android.content.ContentResolver
 import android.net.Uri
-import com.kotlex.system.io.closeCatched
 import com.kotlex.system.io.writeTo
 import java.io.BufferedInputStream
 import java.io.File
@@ -25,9 +24,9 @@ fun ContentResolver.copy(source: Uri, target: File) {
         fileOutputStream = FileOutputStream(target)
         bufferedInputStream.writeTo(fileOutputStream)
     } finally {
-        inputStream?.closeCatched()
-        bufferedInputStream?.closeCatched()
-        fileOutputStream?.closeCatched()
+        runCatching { inputStream?.close() }
+        runCatching { bufferedInputStream?.close() }
+        runCatching { fileOutputStream?.close() }
     }
 }
 

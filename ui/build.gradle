@@ -4,11 +4,6 @@ apply plugin: 'kotlin-android'
 apply plugin: 'com.github.dcendents.android-maven'
 
 
-
-
-
-
-
 android {
     compileSdkVersion 28
     defaultConfig {
@@ -57,7 +52,7 @@ ext {
     libraryVersion = android.defaultConfig.versionName
     developerId = 'adaemmrich'
     developerName = 'adaemmrich'
-    developerEmail = 'flanschifox@gmail.com'
+    developerEmail = 'adaemmrich@pm.me'
     licenseName = 'The Apache Software License, Version 2.0'
     licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
     allLicenses = ["Apache-2.0"]

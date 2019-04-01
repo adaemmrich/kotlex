@@ -1,7 +1,8 @@
 package com.kotlex.system.android
 
 import android.content.res.AssetManager
-import com.kotlex.system.io.closeCatched
+import android.net.Uri
+import com.kotlex.system.io.toAssetPath
 import com.kotlex.system.io.writeTo
 import java.io.BufferedInputStream
 import java.io.File
@@ -30,12 +31,48 @@ fun AssetManager.isAssetAvailable(assetPath: String): Boolean {
     } catch (e: Exception) {
         e.printStackTrace()
     } finally {
-        inputStream?.closeCatched()
+        kotlin.runCatching { inputStream?.close() }
     }
     return success
 }
 
+fun AssetManager.isAssetAvailable(uri: Uri): Boolean {
+    return isAssetAvailable(uri.toAssetPath())
+}
+
+fun AssetManager.copy(uri: Uri, target: File) {
+    copy(uri.toAssetPath(), target)
+}
+
+fun AssetManager.listUris(path: String): ArrayList<Uri> {
+    val files = list(path)
+    val uris = ArrayList<Uri>()
+
+    if (files != null) {
+        uris.addAll(files.map { Uri.parse("$path$it") })
+    }
+    return uris
+}
+
 fun AssetManager.copy(assetPath: String, target: File) {
+    val subFiles = list(assetPath) ?: throw IllegalArgumentException("asset not available")
+
+    if (subFiles.isEmpty()) {
+        copyFile(assetPath, target)
+    } else {
+        copyDir(assetPath, target)
+    }
+}
+
+fun AssetManager.copyDir(assetDir: String, target: File) {
+
+    val subPaths = list(assetDir)!!
+    for (assetFile in subPaths) {
+        copyFile(assetFile, File(target, assetFile))
+    }
+}
+
+fun AssetManager.copyFile(assetPath: String, target: File) {
     var inputStream: InputStream? = null
     var bufferedInputStream: BufferedInputStream? = null
     var fileOutputStream: FileOutputStream? = null
@@ -46,8 +83,8 @@ fun AssetManager.copy(assetPath: String, target: File) {
         fileOutputStream = FileOutputStream(target)
         bufferedInputStream.writeTo(fileOutputStream)
     } finally {
-        inputStream?.closeCatched()
-        bufferedInputStream?.closeCatched()
-        fileOutputStream?.closeCatched()
+        runCatching { inputStream?.close() }
+        runCatching { bufferedInputStream?.close() }
+        runCatching { fileOutputStream?.close() }
     }
 }

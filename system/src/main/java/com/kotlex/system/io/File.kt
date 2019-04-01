@@ -36,9 +36,9 @@ fun File.copy(target: File) {
         fileOutputStream = FileOutputStream(target)
         bufferedInputStream.writeTo(fileOutputStream)
     } finally {
-        inputStream?.closeCatched()
-        bufferedInputStream?.closeCatched()
-        fileOutputStream?.closeCatched()
+        runCatching { inputStream?.close() }
+        runCatching { bufferedInputStream?.close() }
+        runCatching { fileOutputStream?.close() }
     }
 }
 
