@@ -1,3 +1,6 @@
 include ':app', ':view', ':rx', ':system', ':ui', ':ui'
 
 
+project(':rx').projectDir = new File('rx')
+project(':system').projectDir = new File('system')
+project(':ui').projectDir = new File('ui')

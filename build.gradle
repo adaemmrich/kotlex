@@ -3,8 +3,8 @@
 
 buildscript {
     ext.kotlin_version = '1.3.21'
-    ext.libVersionName = '0.0.2'
-    ext.libCode = 2
+    ext.libVersionName = '0.0.4'
+    ext.libCode = 4
 
     repositories {
         google()
@@ -25,7 +25,6 @@ allprojects {
         jcenter()
     }
 }
-
 
 
 task clean(type: Delete) {

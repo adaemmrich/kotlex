@@ -2,6 +2,7 @@ package com.kotlex.system.android
 
 import android.content.res.AssetManager
 import android.net.Uri
+import com.kotlex.system.android.AndroidConst.ANDROID_ASSET_PREFIX
 import com.kotlex.system.io.toAssetPath
 import com.kotlex.system.io.writeTo
 import java.io.BufferedInputStream
@@ -10,18 +11,15 @@ import java.io.FileOutputStream
 import java.io.InputStream
 
 
-private const val FILE_ANDROID_ASSET = "file:///android_asset/"
-
-
-fun AssetManager.isAssetPath(src: String): Boolean {
-    return src.startsWith(FILE_ANDROID_ASSET)
-}
+val AssetManager.defaultDirs: Array<String>
+    get() {
+        return arrayOf("webkit", "sounds", "images")
+    }
 
 /**
  * opens the Asset to test if it's readable
  */
-fun AssetManager.isAssetAvailable(assetPath: String): Boolean {
-    if (!assetPath.startsWith(FILE_ANDROID_ASSET)) return false
+fun AssetManager.isAssetFileAvailable(assetPath: String): Boolean {
 
     var inputStream: InputStream? = null
     var success = false
@@ -36,8 +34,8 @@ fun AssetManager.isAssetAvailable(assetPath: String): Boolean {
     return success
 }
 
-fun AssetManager.isAssetAvailable(uri: Uri): Boolean {
-    return isAssetAvailable(uri.toAssetPath())
+fun AssetManager.isAssetFileAvailable(uri: Uri): Boolean {
+    return isAssetFileAvailable(uri.toAssetPath())
 }
 
 fun AssetManager.copy(uri: Uri, target: File) {
@@ -49,10 +47,12 @@ fun AssetManager.listUris(path: String): ArrayList<Uri> {
     val uris = ArrayList<Uri>()
 
     if (files != null) {
-        uris.addAll(files.map { Uri.parse("$path$it") })
+        uris.addAll(files.map { Uri.parse("$ANDROID_ASSET_PREFIX$path/$it") }
+        )
     }
     return uris
 }
+
 
 fun AssetManager.copy(assetPath: String, target: File) {
     val subFiles = list(assetPath) ?: throw IllegalArgumentException("asset not available")
@@ -68,7 +68,7 @@ fun AssetManager.copyDir(assetDir: String, target: File) {
 
     val subPaths = list(assetDir)!!
     for (assetFile in subPaths) {
-        copyFile(assetFile, File(target, assetFile))
+        copyFile("$assetDir/$assetFile", File(target, assetFile))
     }
 }
 
@@ -76,6 +76,8 @@ fun AssetManager.copyFile(assetPath: String, target: File) {
     var inputStream: InputStream? = null
     var bufferedInputStream: BufferedInputStream? = null
     var fileOutputStream: FileOutputStream? = null
+
+    target.parentFile.mkdirs()
 
     try {
         inputStream = open(assetPath)
